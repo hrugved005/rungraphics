@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <graphics.h>
+
+// Function to project a 3D point onto a 2D plane using perspective projection
+void perspectiveProjection(int x, int y, int z, int *x2d, int *y2d, float d) {
+    // Perspective projection formula: X' = X / Z, Y' = Y / Z
+    *x2d = (int)(x * d / (z + d));
+    *y2d = (int)(y * d / (z + d));
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "");  // Initialize graphics mode
+
+    // Distance from the projection plane
+    float d = 500;
+
+    // Define the 8 vertices of a cube in 3D space
+    int cube[8][3] = {
+        {-100, -100, -100}, {100, -100, -100}, {100, 100, -100}, {-100, 100, -100},
+        {-100, -100, 100}, {100, -100, 100}, {100, 100, 100}, {-100, 100, 100}
+    };
+
+    // Store the 2D projected coordinates
+    int projected[8][2];
+
+    // Project each vertex of the cube
+    for (int i = 0; i < 8; i++) {
+        perspectiveProjection(cube[i][0], cube[i][1], cube[i][2], &projected[i][0], &projected[i][1], d);
+    }
+
+    // Draw the projected cube
+    setcolor(WHITE);
+
+    // Draw the edges of the cube using the projected 2D coordinates
+    line(projected[0][0] + 320, projected[0][1] + 240, projected[1][0] + 320, projected[1][1] + 240);
+    line(projected[1][0] + 320, projected[1][1] + 240, projected[2][0] + 320, projected[2][1] + 240);
+    line(projected[2][0] + 320, projected[2][1] + 240, projected[3][0] + 320, projected[3][1] + 240);
+    line(projected[3][0] + 320, projected[3][1] + 240, projected[0][0] + 320, projected[0][1] + 240);
+
+    line(projected[4][0] + 320, projected[4][1] + 240, projected[5][0] + 320, projected[5][1] + 240);
+    line(projected[5][0] + 320, projected[5][1] + 240, projected[6][0] + 320, projected[6][1] + 240);
+    line(projected[6][0] + 320, projected[6][1] + 240, projected[7][0] + 320, projected[7][1] + 240);
+    line(projected[7][0] + 320, projected[7][1] + 240, projected[4][0] + 320, projected[4][1] + 240);
+
+    line(projected[0][0] + 320, projected[0][1] + 240, projected[4][0] + 320, projected[4][1] + 240);
+    line(projected[1][0] + 320, projected[1][1] + 240, projected[5][0] + 320, projected[5][1] + 240);
+    line(projected[2][0] + 320, projected[2][1] + 240, projected[6][0] + 320, projected[6][1] + 240);
+    line(projected[3][0] + 320, projected[3][1] + 240, projected[7][0] + 320, projected[7][1] + 240);
+
+    getch();  // Wait for key press
+    closegraph();  // Close the graphics window
+    return 0;
+}

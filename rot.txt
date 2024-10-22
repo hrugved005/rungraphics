@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <graphics.h>
+#include <math.h>  // For sin() and cos() functions
+
+#define PI 3.14159265  // Define the value of Pi
+
+// Function to draw a polygon using the coordinates
+void drawPolygon(int vertices[][2], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        line(vertices[i][0], vertices[i][1], vertices[i + 1][0], vertices[i + 1][1]);
+    }
+    // Close the polygon by connecting the last vertex to the first vertex
+    line(vertices[n - 1][0], vertices[n - 1][1], vertices[0][0], vertices[0][1]);
+}
+
+// Function to rotate the polygon
+void rotatePolygon(int vertices[][2], int rotatedVertices[][2], int n, float angle) {
+    float rad = angle * (PI / 180);  // Convert angle from degrees to radians
+    float cosTheta = cos(rad);  // Calculate cos of the angle
+    float sinTheta = sin(rad);  // Calculate sin of the angle
+    
+    for (int i = 0; i < n; i++) {
+        // Apply rotation transformation
+        rotatedVertices[i][0] = round(vertices[i][0] * cosTheta - vertices[i][1] * sinTheta);
+        rotatedVertices[i][1] = round(vertices[i][0] * sinTheta + vertices[i][1] * cosTheta);
+    }
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "");  // Initialize graphics mode
+    
+    int n;  // Number of vertices
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    
+    int vertices[n][2];  // Original coordinates of the polygon
+    int rotatedVertices[n][2];  // Coordinates after rotation
+    
+    // Input the vertices
+    printf("Enter the coordinates of the vertices (x y):\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d %d", &vertices[i][0], &vertices[i][1]);
+    }
+    
+    // Input the rotation angle
+    float angle;
+    printf("Enter the rotation angle in degrees: ");
+    scanf("%f", &angle);
+    
+    // Draw the original polygon
+    printf("Drawing the original polygon...\n");
+    drawPolygon(vertices, n);
+    
+    // Perform the rotation
+    rotatePolygon(vertices, rotatedVertices, n, angle);
+    
+    // Draw the rotated polygon in a different color
+    printf("Drawing the rotated polygon...\n");
+    setcolor(RED);  // Set color for rotated polygon
+    drawPolygon(rotatedVertices, n);
+    
+    getch();  // Wait for key press
+    closegraph();  // Close the graphics window
+    return 0;
+}

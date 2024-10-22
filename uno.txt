@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <math.h>   // For fabs()
+
+void drawLine(int x1, int y1, int x2, int y2) {
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+    
+    // Calculate the number of steps required
+    int steps = fabs(dx) > fabs(dy) ? fabs(dx) : fabs(dy);
+    
+    // Calculate the increment values for each step
+    float Xinc = dx / (float) steps;
+    float Yinc = dy / (float) steps;
+    
+    // Initial point
+    float x = x1;
+    float y = y1;
+    
+    // Draw the points
+    for (int i = 0; i <= steps; i++) {
+        printf("Plotting point at: (%.0f, %.0f)\n", x, y); // Replace with a graphical function to plot the pixel
+        x += Xinc;
+        y += Yinc;
+    }
+}
+
+int main() {
+    int x1, y1, x2, y2;
+    
+    // Input start and end points
+    printf("Enter the coordinates of the first point (x1, y1): ");
+    scanf("%d %d", &x1, &y1);
+    printf("Enter the coordinates of the second point (x2, y2): ");
+    scanf("%d %d", &x2, &y2);
+    
+    // Draw the line
+    drawLine(x1, y1, x2, y2);
+    
+    return 0;
+}

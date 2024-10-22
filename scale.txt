@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <graphics.h>
+
+// Function to draw a polygon using the coordinates
+void drawPolygon(int vertices[][2], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        line(vertices[i][0], vertices[i][1], vertices[i + 1][0], vertices[i + 1][1]);
+    }
+    // Close the polygon by connecting the last vertex to the first vertex
+    line(vertices[n - 1][0], vertices[n - 1][1], vertices[0][0], vertices[0][1]);
+}
+
+// Function to scale the polygon
+void scalePolygon(int vertices[][2], int scaledVertices[][2], int n, float sx, float sy) {
+    for (int i = 0; i < n; i++) {
+        // Apply scaling transformation
+        scaledVertices[i][0] = vertices[i][0] * sx;
+        scaledVertices[i][1] = vertices[i][1] * sy;
+    }
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "");  // Initialize graphics mode
+    
+    int n;  // Number of vertices
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    
+    int vertices[n][2];  // Original coordinates of the polygon
+    int scaledVertices[n][2];  // Coordinates after scaling
+    
+    // Input the vertices
+    printf("Enter the coordinates of the vertices (x y):\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d %d", &vertices[i][0], &vertices[i][1]);
+    }
+    
+    // Input the scaling factors
+    float sx, sy;
+    printf("Enter the scaling factor for X-axis (sx): ");
+    scanf("%f", &sx);
+    printf("Enter the scaling factor for Y-axis (sy): ");
+    scanf("%f", &sy);
+    
+    // Draw the original polygon
+    printf("Drawing the original polygon...\n");
+    drawPolygon(vertices, n);
+    
+    // Perform the scaling
+    scalePolygon(vertices, scaledVertices, n, sx, sy);
+    
+    // Draw the scaled polygon in a different color
+    printf("Drawing the scaled polygon...\n");
+    setcolor(RED);  // Set color for scaled polygon
+    drawPolygon(scaledVertices, n);
+    
+    getch();  // Wait for key press
+    closegraph();  // Close the graphics window
+    return 0;
+}

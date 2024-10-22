@@ -1,0 +1,46 @@
+#include <stdio.h>
+
+// Function to implement Bresenham's line drawing algorithm
+void drawLine(int x1, int y1, int x2, int y2) {
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+
+    // Decision parameter
+    int p = 2 * dy - dx;
+    
+    // Initial point
+    int x = x1;
+    int y = y1;
+
+    printf("Plotting point at: (%d, %d)\n", x, y);  // Plot first point
+    
+    // Loop through the range of x
+    while (x < x2) {
+        x++;  // Move to the next x coordinate
+
+        // Decision making
+        if (p < 0) {
+            p = p + 2 * dy;  // Update the decision parameter
+        } else {
+            y++;  // Move to the next y coordinate if p >= 0
+            p = p + 2 * (dy - dx);  // Update the decision parameter
+        }
+
+        printf("Plotting point at: (%d, %d)\n", x, y);  // Plot next point
+    }
+}
+
+int main() {
+    int x1, y1, x2, y2;
+    
+    // Input start and end points
+    printf("Enter the coordinates of the first point (x1, y1): ");
+    scanf("%d %d", &x1, &y1);
+    printf("Enter the coordinates of the second point (x2, y2): ");
+    scanf("%d %d", &x2, &y2);
+    
+    // Draw the line
+    drawLine(x1, y1, x2, y2);
+    
+    return 0;
+}

@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <graphics.h>
+
+// Function to draw a polygon using the coordinates
+void drawPolygon(int vertices[][2], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        line(vertices[i][0], vertices[i][1], vertices[i + 1][0], vertices[i + 1][1]);
+    }
+    // Close the polygon by connecting the last vertex to the first vertex
+    line(vertices[n - 1][0], vertices[n - 1][1], vertices[0][0], vertices[0][1]);
+}
+
+// Function to translate the polygon
+void translatePolygon(int vertices[][2], int translatedVertices[][2], int n, int tx, int ty) {
+    for (int i = 0; i < n; i++) {
+        translatedVertices[i][0] = vertices[i][0] + tx;  // Translate X coordinate
+        translatedVertices[i][1] = vertices[i][1] + ty;  // Translate Y coordinate
+    }
+}
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "");  // Initialize graphics mode
+    
+    int n;  // Number of vertices
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    
+    int vertices[n][2];  // Original coordinates of the polygon
+    int translatedVertices[n][2];  // Coordinates after translation
+    
+    // Input the vertices
+    printf("Enter the coordinates of the vertices (x y):\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d %d", &vertices[i][0], &vertices[i][1]);
+    }
+    
+    // Input the translation factors
+    int tx, ty;
+    printf("Enter the translation factors (tx ty): ");
+    scanf("%d %d", &tx, &ty);
+    
+    // Draw the original polygon
+    printf("Drawing the original polygon...\n");
+    drawPolygon(vertices, n);
+    
+    // Perform the translation
+    translatePolygon(vertices, translatedVertices, n, tx, ty);
+    
+    // Draw the translated polygon in a different color
+    printf("Drawing the translated polygon...\n");
+    setcolor(RED);  // Set color for translated polygon
+    drawPolygon(translatedVertices, n);
+    
+    getch();  // Wait for key press
+    closegraph();  // Close the graphics window
+    return 0;
+}
